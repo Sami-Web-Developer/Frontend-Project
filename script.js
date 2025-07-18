@@ -19,7 +19,7 @@ function formatTime(seconds) {
 
 async function getsong(folder) {
 currFolder = folder;
-  let a = await fetch(`http://127.0.0.1:3000/${folder}/`)
+  let a = await fetch(`${folder}/`)
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -84,7 +84,7 @@ const playmusic= (track,pause=false ) =>{
   // let audio = new Audio("/Naats/" + track)
   
   
-  currentsong.src = `/${currFolder}/` + track
+  currentsong.src = `${currFolder}/` + track
   if(!pause){
     currentsong.play();
     play.src = "img/pause.svg"
@@ -124,7 +124,7 @@ currentsong.onended = () => {
   }
 
 async function displayAlbums() {
-    let a = await fetch(`http://127.0.0.1:3000/songs/`)
+    let a = await fetch(`songs/`)
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -141,7 +141,7 @@ for (let index = 0; index < array.length; index++) {
     if(e.href.includes("/songs")){
       let folder = e.href.split("/").slice(-2)[0]
       // get the matadata of the folder
-          let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`)
+          let a = await fetch(`songs/${folder}/info.json`)
   let response = await a.json();
 
   cardContainer.innerHTML = cardContainer.innerHTML + `               <div  data-folder="${folder}" class="card">
@@ -151,7 +151,7 @@ for (let index = 0; index < array.length; index++) {
                         </svg>
                         </svg>
                     </div>
-                    <img  src="/songs/${folder}/cover.png" alt="">
+                    <img  src="songs/${folder}/cover.png" alt="">
                     <h2>${response.Title}</h2>
                     <p>${response.Description}</p>
                 </div>`
@@ -289,7 +289,7 @@ else{
 let allSongs = []; // Global array
 
 async function loadAllSongs() {
-    let res = await fetch("http://127.0.0.1:3000/songs/");
+    let res = await fetch("songs/");
     let text = await res.text();
 
     let div = document.createElement("div");
@@ -347,13 +347,13 @@ loadAllSongs();
 document.querySelectorAll(".logo img, .logo p").forEach(el => {
     el.style.cursor = "pointer";  // Optional: makes it look clickable
     el.addEventListener("click", () => {
-        window.location.href = "http://127.0.0.1:3000/index.html";
+        window.location.href = "index.html";
     });
 });
 document.querySelectorAll(".hm img, .hm p").forEach(el => {
     el.style.cursor = "pointer";  // Optional: makes it look clickable
     el.addEventListener("click", () => {
-        window.location.href = "http://127.0.0.1:3000/index.html";
+        window.location.href = "index.html";
     });
 });
 
