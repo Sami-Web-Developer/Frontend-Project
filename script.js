@@ -19,8 +19,13 @@ function formatTime(seconds) {
 
 async function getsong(folder) {
 currFolder = folder;
+if (!currFolder.startsWith("songs/")) {
+    currFolder = "songs/" + currFolder;
+}
+
   let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`)
-  let response = await a.json();
+ let response = await a.text();
+
 songs = response;
 
   
@@ -156,13 +161,14 @@ async function displayAlbums() {
 Array.from(document.getElementsByClassName("card")).forEach(element => {
 
   element.addEventListener("click",async item=>{
-    songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
+    songs = await getsong(item.currentTarget.dataset.folder)
     playmusic(songs[0])
   })
 });
 // get the list of the song
 async function main() {
-   songs = await getsong("songs/ncs");
+   songs = await getsong(`songs/${item.currentTarget.dataset.folder}`)
+
 
 playmusic(songs[0],true)
 
