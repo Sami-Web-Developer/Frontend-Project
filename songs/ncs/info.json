@@ -1,5 +1,8 @@
-[
-  "ncs",
-  "o Adnan Saifi",
-  "o Jamaal Saifi"
-]
+{
+  "Title": "NCS Album",
+  "Description": "Islamic Naats in NCS style",
+  "songs": [
+    "Kamli Wala Da Darbar.mp3",
+    "Madine Chale.mp3"
+  ]
+}

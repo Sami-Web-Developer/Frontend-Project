@@ -1,14 +1,5 @@
 [
-  {
-    "folder": "ncs",
-    "title": "NCS Islamic"
-  },
-  {
-    "folder": "o Adnan Saifi",
-    "title": "Adnan Saifi"
-  },
-  {
-    "folder": "o Jamaal Saifi",
-    "title": "Jamaal Saifi"
-  }
+  "ncs",
+  "o Adnan Saifi",
+  "o Jamaal Saifi"
 ]
