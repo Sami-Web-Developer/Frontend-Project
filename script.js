@@ -347,13 +347,13 @@ loadAllSongs();
 document.querySelectorAll(".logo img, .logo p").forEach(el => {
     el.style.cursor = "pointer";  // Optional: makes it look clickable
     el.addEventListener("click", () => {
-        window.location.href = "http://127.0.0.1:3002/index.html";
+        window.location.href = "https://sami-web-developer.github.io/Frontend-Project/";
     });
 });
 document.querySelectorAll(".hm img, .hm p").forEach(el => {
     el.style.cursor = "pointer";  // Optional: makes it look clickable
     el.addEventListener("click", () => {
-        window.location.href = "http://127.0.0.1:3002/index.html";
+        window.location.href = "https://sami-web-developer.github.io/Frontend-Project/";
     });
 });
 
