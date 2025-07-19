@@ -70,6 +70,7 @@ currFolder = folder;
   Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
     e.addEventListener("click", element => {
       let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
+      console.log("track:", track);
       playmusic(track);
     });
   });
