@@ -126,52 +126,36 @@ currentsong.onended = () => {
   }
 
 async function displayAlbums() {
-    let a = await fetch(`/songs/`)
-  let response = await a.text();
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let anchors = div.getElementsByTagName("a")
-   let cardContainer = document.querySelector(".cardContainer")
- 
- let array = Array.from (anchors)
-for (let index = 0; index < array.length; index++) {
-  const e = array[index];
-  
+  let res = await fetch("/songs/albums.json");
+  let folders = await res.json();
+  let cardContainer = document.querySelector(".cardContainer");
 
+  for (const folder of folders) {
+    let a = await fetch(`/songs/${folder}/info.json`);
+    let response = await a.json();
 
-
-    if(e.href.includes("/songs")){
-      let folder = e.href.split("/").slice(-2)[0]
-      // get the matadata of the folder
-          let a = await fetch(`/songs/${folder}/info.json`)
-  let response = await a.json();
-
-  cardContainer.innerHTML = cardContainer.innerHTML + `               <div  data-folder="${folder}" class="card">
-                    <div class="circle-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
-                            <path fill="black" d="M8 5v14l11-7z" />
-                        </svg>
-                        </svg>
-                    </div>
-                    <img  src="/songs/${folder}/cover.png" alt="">
-                    <h2>${response.Title}</h2>
-                    <p>${response.Description}</p>
-                </div>`
-    }
+    cardContainer.innerHTML += `
+      <div data-folder="${folder}" class="card">
+        <div class="circle-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
+              <path fill="black" d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+        <img src="/songs/${folder}/cover.png" alt="">
+        <h2>${response.Title}</h2>
+        <p>${response.Description}</p>
+      </div>`;
   }
 
-// load the play list whenever card is clicked
-
-
-Array.from(document.getElementsByClassName("card")).forEach(element => {
-
-  element.addEventListener("click",async item=>{
-    songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
-    playmusic(songs[0])
-  })
-});
-
+  // ✅ Attach click events
+  Array.from(document.getElementsByClassName("card")).forEach(element => {
+    element.addEventListener("click", async item => {
+      songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
+      playmusic(songs[0]);
+    });
+  });
 }
+
 
 
 // get the list of the song
@@ -291,8 +275,13 @@ else{
 let allSongs = []; // Global array
 
 async function loadAllSongs() {
-    let res = await fetch("/songs/");
-    let text = await res.text();
+    let res = await fetch("/songs/albums.json");
+    let folders = await res.json();
+
+      for (const folder of folders) {
+    let songsInAlbum = await getsong(`songs/${folder}`);
+    allSongs.push(...songsInAlbum);
+  }
 
     let div = document.createElement("div");
     div.innerHTML = text;
