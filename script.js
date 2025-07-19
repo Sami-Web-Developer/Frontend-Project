@@ -151,10 +151,6 @@ Array.from(document.getElementsByClassName("card")).forEach(element => {
     playmusic(songs[0])
   })
 });
-
-
-
-
 // get the list of the song
 async function main() {
    songs = await getsong("songs/ncs");
