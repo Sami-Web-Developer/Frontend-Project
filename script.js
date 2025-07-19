@@ -11,10 +11,11 @@ function formatTime(seconds) {
 async function getsong(folder) {
   currFolder = folder;
   const res = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`);
-  songs = await res.json();
+  const list = await res.json();
+  songs = list;
 
   const songul = document.querySelector(".songlist ul");
-  songul.innerHTML = songs.map(song => `
+  songul.innerHTML = list.map(song => `
     <li>
       <img class="invert" src="https://sami-web-developer.github.io/Frontend-Project/img/music.svg" alt="">
       <div class="info"><div>${song.replaceAll("%20", " ")}</div><div>Sami Saifi</div></div>
@@ -29,8 +30,9 @@ async function getsong(folder) {
     });
   });
 
-  return songs;
+  return list;
 }
+
 
 function playmusic(track, pause = false) {
   currentsong.src = `https://sami-web-developer.github.io/Frontend-Project/${currFolder}/` + encodeURIComponent(track);
