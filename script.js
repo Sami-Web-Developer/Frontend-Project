@@ -46,7 +46,9 @@ currFolder = folder;
   songul.innerHTML = ""
   for (const song of songs) {
     songul.innerHTML = songul.innerHTML + `<li> 
-                        <img class="invert" src="img/music.svg" alt="">
+                        <img class="invert" src="https://sami-web-developer.github.io/Frontend-Project/img/music.svg" alt="">
+<img class="invert" src="https://sami-web-developer.github.io/Frontend-Project/img/play.svg" alt="">
+
                         <div class="info">
                             <div>${song.replaceAll("%20", " ")}</div>
                             <div>Sami Saifi</div>
