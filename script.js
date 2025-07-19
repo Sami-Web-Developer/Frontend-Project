@@ -138,7 +138,7 @@ for (let index = 0; index < array.length; index++) {
 
 
 
-    if(e.href.includes("/songs") && !e.href.includes(".htaccess")){
+    if(e.href.includes("/songs")){
       let folder = e.href.split("/").slice(-2)[0]
       // get the matadata of the folder
           let a = await fetch(`/songs/${folder}/info.json`)
