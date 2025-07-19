@@ -152,7 +152,7 @@ Array.from(document.getElementsByClassName("card")).forEach(element => {
   })
 });
 
-}
+
 
 
 // get the list of the song
