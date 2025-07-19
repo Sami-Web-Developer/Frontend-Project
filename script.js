@@ -19,8 +19,10 @@ function formatTime(seconds) {
 
 async function getsong(folder) {
 currFolder = folder;
-  let a = await fetch(`${folder}/`)
-  let response = await a.text();
+let a = await fetch(`${folder}/info.json`)
+let response = await a.json();
+songs = response.tracks;
+
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a")
@@ -84,7 +86,7 @@ const playmusic= (track,pause=false ) =>{
   // let audio = new Audio("/Naats/" + track)
   
   
-  currentsong.src = `/${currFolder}/` + track
+  currentsong.src = `${currFolder}/${track}`;
   if(!pause){
     currentsong.play();
     play.src = "img/pause.svg"
