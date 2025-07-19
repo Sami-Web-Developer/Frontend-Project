@@ -18,26 +18,36 @@ function formatTime(seconds) {
 
 
 async function getsong(folder) {
-currFolder = folder;
-  // let a = await fetch(`http://127.0.0.1:3002/${folder}/`)
-  let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`);
-songs = await a.json();
+  currFolder = folder;
+  let res = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`);
+  songs = await res.json();
 
-  let response = await a.text();
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let as = div.getElementsByTagName("a")
-  songs = []
-  for (let index = 0; index < as.length; index++) {
-    const element = as[index];
-    // if (element.href.endsWith("mp3")) {
-    //   song.push(element.href.split(`/${folder}/`)[1])
+  // show all the songs in playlist
 
-         if (element.href.endsWith("mp3")) {
-      songs.push(element.href.split(`/${folder}/`)[1]); // ✅ CORRECT
-    }
+  songul.innerHTML = "";
+  for (const song of songs) {
+    songul.innerHTML += `<li> 
+      <img class="invert" src="img/music.svg" alt="">
+      <div class="info">
+        <div>${song.replaceAll("%20", " ")}</div>
+        <div>Sami Saifi</div>
+      </div>
+      <span>Play Now</span>
+      <img class="invert" src="img/play.svg" alt="">
+    </li>`;
+  }
 
-    }
+  // Attach click event to each song
+  Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
+    e.addEventListener("click", () => {
+      let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
+      playmusic(track);
+    });
+  });
+
+  return songs;
+}
+
   
   
 
@@ -72,14 +82,7 @@ songs = await a.json();
 //   return songs
 // }
 
-  Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
-    e.addEventListener("click", element => {
-      let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
-      playmusic(track);
-    });
-  });
 
-  return songs; }// ✅ Now it returns after everything is ready
 
 
 
@@ -132,57 +135,35 @@ currentsong.onended = () => {
   }
 
 async function displayAlbums() {
-    // let a = await fetch(`http://127.0.0.1:3002/songs/`)
-let res = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`);
-songs = await res.json();
+  let res = await fetch("https://sami-web-developer.github.io/Frontend-Project/songs/albums.json");
+  let folders = await res.json();
 
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let anchors = div.getElementsByTagName("a")
-   let cardContainer = document.querySelector(".cardContainer")
- 
- let array = Array.from (anchors)
-for (let index = 0; index < array.length; index++) {
-  const e = array[index];
-  
+  let cardContainer = document.querySelector(".cardContainer");
 
+  for (const folder of folders) {
+    let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`);
+    let response = await a.json();
 
-
-    if(e.href.includes("/songs")){
-      let folder = e.href.split("/").slice(-2)[0]
-      // get the matadata of the folder
-          // let a = await fetch(`http://127.0.0.1:3002/songs/${folder}/info.json`)
-         let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`)
-
-  let response = await a.json();
-
-  cardContainer.innerHTML = cardContainer.innerHTML + `               <div  data-folder="${folder}" class="card">
-                    <div class="circle-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
-                            <path fill="black" d="M8 5v14l11-7z" />
-                        </svg>
-                        </svg>
-                    </div>
-                   <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
-
-
-                    <h2>${response.Title}</h2>
-                    <p>${response.Description}</p>
-                </div>`
-    }
+    cardContainer.innerHTML += `
+      <div data-folder="${folder}" class="card">
+        <div class="circle-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
+            <path fill="black" d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+        <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
+        <h2>${response.Title}</h2>
+        <p>${response.Description}</p>
+      </div>`;
   }
 
-// load the play list whenever card is clicked
-
-
-Array.from(document.getElementsByClassName("card")).forEach(element => {
-
-  element.addEventListener("click",async item=>{
-    songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
-    playmusic(songs[0])
-  })
-});
-
+  // Card click = load songs
+  Array.from(document.getElementsByClassName("card")).forEach(element => {
+    element.addEventListener("click", async item => {
+      songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
+      playmusic(songs[0]);
+    });
+  });
 }
 
 
@@ -300,53 +281,44 @@ else{
 
 
 
-let allSongs = []; // Global array
+let allSongs = [];
 
 async function loadAllSongs() {
-    // let res = await fetch("http://127.0.0.1:3002/songs/");
-    let res = await fetch("https://sami-web-developer.github.io/Frontend-Project/songs/")
-    let text = await res.text();
+  let res = await fetch("https://sami-web-developer.github.io/Frontend-Project/songs/albums.json");
+  let folders = await res.json();
 
-    let div = document.createElement("div");
-    div.innerHTML = text;
-    let anchors = div.getElementsByTagName("a");
+  for (const folder of folders) {
+    let songsInAlbum = await getsong(`songs/${folder}`);
+    allSongs.push(...songsInAlbum);
+  }
 
-    for (let a of anchors) {
-        if (a.href.includes("/songs/")) {
-            let folder = a.href.split("/").slice(-2)[0];
-            let songsInAlbum = await getsong(`songs/${folder}`);
-            allSongs.push(...songsInAlbum); // Fill the array
-        }
+  document.getElementById("searchSongs").addEventListener("input", function () {
+    let searchValue = this.value.toLowerCase();
+    let filtered = allSongs.filter(song => song.toLowerCase().startsWith(searchValue));
+    let songul = document.querySelector(".songlist ul");
+    songul.innerHTML = "";
+
+    for (const song of filtered) {
+      songul.innerHTML += `<li> 
+        <img class="invert" src="img/music.svg" alt="">
+        <div class="info">
+          <div>${song.replaceAll("%20", " ")}</div>
+          <div>Sami Saifi</div>
+        </div>
+        <span>Play Now</span>
+        <img class="invert" src="img/play.svg" alt="">
+      </li>`;
     }
 
-    // ✅ Move search event listener HERE, after songs are loaded
-    document.getElementById("searchSongs").addEventListener("input", function () {
-        let searchValue = this.value.toLowerCase();
-        let filtered = allSongs.filter(song => song.toLowerCase().startsWith(searchValue)); // ✅ ONLY starts with
-
-        let songul = document.querySelector(".songlist").getElementsByTagName("ul")[0];
-        songul.innerHTML = "";
-
-        for (const song of filtered) {
-            songul.innerHTML += `<li> 
-                <img class="invert" src="img/music.svg" alt="">
-                <div class="info">
-                    <div>${song.replaceAll("%20", " ")}</div>
-                    <div>Sami Saifi</div>
-                </div>
-                <span>Play Now</span>
-                <img class="invert" src="img/play.svg" alt="">
-            </li>`;
-        }
-
-        Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
-            e.addEventListener("click", () => {
-                let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
-                playmusic(track); // Play the clicked song
-            });
-        });
+    Array.from(songul.getElementsByTagName("li")).forEach(e => {
+      e.addEventListener("click", () => {
+        let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
+        playmusic(track);
+      });
     });
+  });
 }
+
 
 // Call the function
 loadAllSongs();
