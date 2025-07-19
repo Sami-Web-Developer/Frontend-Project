@@ -133,8 +133,9 @@ currentsong.onended = () => {
 
 async function displayAlbums() {
     // let a = await fetch(`http://127.0.0.1:3002/songs/`)
-    let a = await fetch("https://sami-web-developer.github.io/Frontend-Project/songs/")
-  let response = await a.text();
+let res = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`);
+songs = await res.json();
+
   let div = document.createElement("div");
   div.innerHTML = response;
   let anchors = div.getElementsByTagName("a")
