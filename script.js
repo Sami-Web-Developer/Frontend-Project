@@ -146,7 +146,8 @@ for (let index = 0; index < array.length; index++) {
       let folder = e.href.split("/").slice(-2)[0]
       // get the matadata of the folder
           // let a = await fetch(`http://127.0.0.1:3002/songs/${folder}/info.json`)
-          let a = await fetch("https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json")
+         let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`)
+
   let response = await a.json();
 
   cardContainer.innerHTML = cardContainer.innerHTML + `               <div  data-folder="${folder}" class="card">
