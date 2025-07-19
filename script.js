@@ -86,7 +86,8 @@ const playmusic= (track,pause=false ) =>{
   
   
   // currentsong.src = `/${currFolder}/` + track
-  currentsong.src = `https://sami-web-developer.github.io/Frontend-Project/${currFolder}/` + track
+  currentsong.src = `https://sami-web-developer.github.io/Frontend-Project/${currFolder}/` + encodeURIComponent(track);
+
 
   if(!pause){
     currentsong.play();
@@ -157,7 +158,9 @@ for (let index = 0; index < array.length; index++) {
                         </svg>
                         </svg>
                     </div>
-                    <img  src="/songs/${folder}/cover.png" alt="">
+                   <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
+
+
                     <h2>${response.Title}</h2>
                     <p>${response.Description}</p>
                 </div>`
