@@ -19,13 +19,8 @@ function formatTime(seconds) {
 
 async function getsong(folder) {
 currFolder = folder;
-if (!currFolder.startsWith("songs/")) {
-    currFolder = "songs/" + currFolder;
-}
-
   let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`)
- let response = await a.text();
-
+  let response = await a.json();
 songs = response;
 
   
@@ -118,27 +113,25 @@ currentsong.onended = () => {
   }
 
 async function displayAlbums() {
-    let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/albums.json`)
+    let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/albums.json`);
     let response = await a.json();
 
     let div = document.createElement("div");
     div.innerHTML = response;
-
     let anchors = div.getElementsByTagName("a");
     let cardContainer = document.querySelector(".cardContainer");
 
     let array = Array.from(anchors);
     for (let index = 0; index < array.length; index++) {
         const e = array[index];
-
         if (e.href.includes("/songs")) {
             let folder = e.href.split("/").slice(-2)[0];
 
-            // get the metadata of the folder
+            // fetch info.json
             let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`);
             let response = await a.json();
 
-            cardContainer.innerHTML = cardContainer.innerHTML + `
+            cardContainer.innerHTML += `
                 <div data-folder="${folder}" class="card">
                     <div class="circle-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
@@ -148,11 +141,11 @@ async function displayAlbums() {
                     <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
                     <h2>${response.Title}</h2>
                     <p>${response.Description}</p>
-                </div>`;
+                </div>
+            `;
         }
+      }
     }
-}
-
 
 
 // load the play list whenever card is clicked
@@ -161,14 +154,13 @@ async function displayAlbums() {
 Array.from(document.getElementsByClassName("card")).forEach(element => {
 
   element.addEventListener("click",async item=>{
-    songs = await getsong(item.currentTarget.dataset.folder)
+    songs = await getsong(`songs/${item.currentTarget.dataset.folder}`);
     playmusic(songs[0])
   })
 });
 // get the list of the song
 async function main() {
-   songs = await getsong(`songs/${item.currentTarget.dataset.folder}`)
-
+   songs = await getsong("songs/ncs");
 
 playmusic(songs[0],true)
 
