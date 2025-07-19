@@ -21,20 +21,8 @@ async function getsong(folder) {
 currFolder = folder;
   let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/${folder}/playlist.json`)
   let response = await a.json();
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let as = div.getElementsByTagName("a")
-  songs = []
-  for (let index = 0; index < as.length; index++) {
-    const element = as[index];
-    // if (element.href.endsWith("mp3")) {
-    //   song.push(element.href.split(`/${folder}/`)[1])
+songs = response;
 
-         if (element.href.endsWith("mp3")) {
-      songs.push(element.href.split(`/${folder}/`)[1]); // ✅ CORRECT
-    }
-
-    }
   
   
 
@@ -70,9 +58,9 @@ currFolder = folder;
   Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
     e.addEventListener("click", element => {
       let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
-      console.log("track:", track);
+     
       playmusic(track);
-      console.log("track:", track);
+      
     });
   });
 
@@ -80,7 +68,6 @@ currFolder = folder;
 
 
 
-console.log("track:", track);
 
 const playmusic= (track,pause=false ) =>{ 
   // let audio = new Audio("/Naats/" + track)
@@ -90,11 +77,10 @@ const playmusic= (track,pause=false ) =>{
   if(!pause){
     currentsong.play();
     play.src = "https://sami-web-developer.github.io/Frontend-Project/img/pause.svg";
-    console.log("track:", track);
+    
   }
    document.querySelector(".songinfo").innerHTML = decodeURI(track)
    document.querySelector(".songtime").innerHTML = "00:00 / 00:00"
-console.log("track:", track);
 
 
 // 🔄 Highlight the currently playing so
@@ -319,7 +305,8 @@ async function loadAllSongs() {
             songul.innerHTML += `<li> 
                 <img class="invert" src="https://sami-web-developer.github.io/Frontend-Project/img/music.svg" alt="">
                 <div class="info">
-                    <div>${song.replaceAll("%20", " ")}</div>
+                    <div>${decodeURIComponent(song)}</div>
+
                     <div>Sami Saifi</div>
                 </div>
                 <span>Play Now</span>
