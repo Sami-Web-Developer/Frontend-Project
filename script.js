@@ -113,34 +113,40 @@ currentsong.onended = () => {
   }
 
 async function displayAlbums() {
-  let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/albums.json`);
-  let folders = await a.json(); // This is now a real array
+    let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/albums.json`);
+    let response = await a.json();
 
-  let cardContainer = document.querySelector(".cardContainer");
+    let div = document.createElement("div");
+    div.innerHTML = response;
+    let anchors = div.getElementsByTagName("a");
+    let cardContainer = document.querySelector(".cardContainer");
 
-  for (let i = 0; i < folders.length; i++) {
-    let folder = folders[i];
+    let array = Array.from(anchors);
+    for (let index = 0; index < array.length; index++) {
+        const e = array[index];
+        if (e.href.includes("/songs")) {
+            let folder = e.href.split("/").slice(-2)[0];
 
-    try {
-      let res = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`);
-      let data = await res.json();
+            // fetch info.json
+            let a = await fetch(`https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/info.json`);
+            let response = await a.json();
 
-      cardContainer.innerHTML += `
-        <div data-folder="${folder}" class="card">
-          <div class="circle-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
-              <path fill="black" d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-          <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
-          <h2>${data.Title}</h2>
-          <p>${data.Description}</p>
-        </div>`;
-    } catch (error) {
-      console.error(`Error loading folder ${folder}:`, error);
+            cardContainer.innerHTML += `
+                <div data-folder="${folder}" class="card">
+                    <div class="circle-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
+                            <path fill="black" d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                    <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
+                    <h2>${response.Title}</h2>
+                    <p>${response.Description}</p>
+                </div>
+            `;
+        }
     }
-  }
 }
+
 // load the play list whenever card is clicked
 
 
