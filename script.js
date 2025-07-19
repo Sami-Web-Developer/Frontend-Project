@@ -33,7 +33,6 @@ async function getsong(folder) {
   return list;
 }
 
-
 function playmusic(track, pause = false) {
   currentsong.src = `https://sami-web-developer.github.io/Frontend-Project/${currFolder}/` + encodeURIComponent(track);
   if (!pause) {
@@ -70,7 +69,9 @@ async function displayAlbums() {
     card.dataset.folder = folder;
     card.innerHTML = `
       <div class="circle-icon">
-        <svg …></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 24 24" width="25" height="25">
+          <path fill="black" d="M8 5v14l11-7z" />
+        </svg>
       </div>
       <img src="https://sami-web-developer.github.io/Frontend-Project/songs/${folder}/cover.png" alt="">
       <h2>${info.Title}</h2>
@@ -124,17 +125,16 @@ async function main() {
       play.src = "https://sami-web-developer.github.io/Frontend-Project/img/play.svg";
     }
   };
-  
+
   previous?.addEventListener("click", () => {
     let idx = songs.indexOf(currentsong.src.split("/").pop());
     if (idx > 0) playmusic(songs[idx - 1]);
   });
+
   next?.addEventListener("click", () => {
     let idx = songs.indexOf(currentsong.src.split("/").pop());
     if (idx + 1 < songs.length) playmusic(songs[idx + 1]);
   });
-
-  // SeekBar & Volume logic unchanged...
 }
 
 main();
