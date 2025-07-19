@@ -1,3 +1,4 @@
+
 let currentsong = new Audio();
 let songs;
 let currFolder;
@@ -50,12 +51,12 @@ const playmusic = (track, pause = false) => {
 }
 
 async function displayAlbums() {
-    let res = await fetch("/songs/albums.json");
+    let res = await fetch("songs/albums.json");
     let folders = await res.json();
     let cardContainer = document.querySelector(".cardContainer");
 
     for (const folder of folders) {
-        let a = await fetch(\`/songs/\${folder}/info.json\`);
+        let a = await fetch(\`songs/\${folder}/info.json\`);
         let response = await a.json();
 
         cardContainer.innerHTML += \`
@@ -65,7 +66,7 @@ async function displayAlbums() {
                         <path fill="black" d="M8 5v14l11-7z" />
                     </svg>
                 </div>
-                <img src="/songs/\${folder}/cover.png" alt="">
+                <img src="songs/\${folder}/cover.png" alt="">
                 <h2>\${response.Title}</h2>
                 <p>\${response.Description}</p>
             </div>\`;
@@ -80,7 +81,7 @@ async function displayAlbums() {
 }
 
 async function loadAllSongs() {
-    let res = await fetch("/songs/albums.json");
+    let res = await fetch("songs/albums.json");
     let folders = await res.json();
 
     for (const folder of folders) {
