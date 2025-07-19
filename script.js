@@ -72,6 +72,7 @@ currFolder = folder;
       let track = e.querySelector(".info").firstElementChild.innerHTML.trim();
       console.log("track:", track);
       playmusic(track);
+      console.log("track:", track);
     });
   });
 
@@ -79,7 +80,7 @@ currFolder = folder;
 
 
 
-
+console.log("track:", track);
 
 const playmusic= (track,pause=false ) =>{ 
   // let audio = new Audio("/Naats/" + track)
@@ -89,10 +90,11 @@ const playmusic= (track,pause=false ) =>{
   if(!pause){
     currentsong.play();
     play.src = "https://sami-web-developer.github.io/Frontend-Project/img/pause.svg";
+    console.log("track:", track);
   }
    document.querySelector(".songinfo").innerHTML = decodeURI(track)
    document.querySelector(".songtime").innerHTML = "00:00 / 00:00"
-
+console.log("track:", track);
 
 
 // 🔄 Highlight the currently playing so
